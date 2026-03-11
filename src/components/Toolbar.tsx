@@ -70,7 +70,7 @@ export function Toolbar({
             return (
               <button key={id} onClick={() => setSurf(id)} style={toolStyle(active)}>
                 <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 3 }}>
-                  <Swatch s={id} p={pat} size={36} />
+                  <Swatch s={id} p={pat} w={54} h={36} />
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 10, fontWeight: 700, color: active ? "#e8e4dc" : "#777" }}>
                       {t.label}
@@ -107,7 +107,7 @@ export function Toolbar({
             return (
               <button key={id} onClick={() => setPat(id)} style={toolStyle(active)}>
                 <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 3 }}>
-                  <Swatch s={surfForSwatch} p={id} size={40} />
+                  <Swatch s={surfForSwatch} p={id} w={60} h={40} />
                   <div>
                     <div style={{ fontSize: 9.5, fontWeight: 700, color: active ? "#e8e4dc" : "#777" }}>
                       {p.label}
@@ -169,7 +169,7 @@ export function Toolbar({
           </div>
           <div style={{ fontSize: 7.5, fontWeight: 700, color: "#444", marginBottom: 6 }}>VORSCHAU</div>
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
-            <Swatch s={surfForSwatch} p={pat} size={80} />
+            <Swatch s={surfForSwatch} p={pat} w={120} h={80} />
           </div>
           <div style={{ fontSize: 7.5, color: "#444", lineHeight: 1.6, background: BG }}>
             0° = quer zur Fahrtrichtung<br />

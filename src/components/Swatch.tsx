@@ -28,21 +28,24 @@ const FMAP: Record<string, PatternFn> = {
 interface SwatchProps {
   s: string
   p: string
-  size?: number
+  /** Canvas-Breite in px (default 54 = 3/2 × 36) */
+  w?: number
+  /** Canvas-Höhe in px (default 36) */
+  h?: number
 }
 
-export function Swatch({ s, p, size = 28 }: SwatchProps) {
+export function Swatch({ s, p, w = 54, h = 36 }: SwatchProps) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const c = ref.current;
     if (!c) return;
     const ctx = c.getContext("2d")!;
-    ctx.clearRect(0, 0, size, size);
+    ctx.clearRect(0, 0, w, h);
 
     if (s === "none") {
       ctx.fillStyle = "#c0bcb4";
-      ctx.fillRect(0, 0, size, size);
+      ctx.fillRect(0, 0, w, h);
       return;
     }
 
@@ -54,17 +57,17 @@ export function Swatch({ s, p, size = 28 }: SwatchProps) {
 
     ctx.save();
     ctx.beginPath();
-    ctx.rect(0, 0, size, size);
+    ctx.rect(0, 0, w, h);
     ctx.clip();
-    render(ctx, 0, 0, size, size, surf, rr, 0);
+    render(ctx, 0, 0, w, h, surf, rr, 0);
     ctx.restore();
-  }, [s, p, size]);
+  }, [s, p, w, h]);
 
   return (
     <canvas
       ref={ref}
-      width={size}
-      height={size}
+      width={w}
+      height={h}
       style={{
         borderRadius: 2,
         display: "block",
