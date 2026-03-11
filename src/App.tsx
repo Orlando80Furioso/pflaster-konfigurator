@@ -18,7 +18,6 @@ export default function App() {
 
   const { grid, histLen, paint, undo, reset, applyPreset } = useGrid();
 
-  // Active brush state
   const [surf,     setSurf]     = useState("t3");
   const [pat,      setPat]      = useState("reihen");
   const [angle,    setAngle]    = useState(0);
@@ -32,31 +31,32 @@ export default function App() {
   }, [paint]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh", overflow: "hidden" }}>
+    /* Full viewport height, no footer – panels use every pixel */
+    <div style={{ display: "flex", flexDirection: "column", height: "100dvh", overflow: "hidden" }}>
 
-      {/* ── Header ── */}
+      {/* ── Header (compact) ── */}
       <div style={{
         display: "flex", alignItems: "center", gap: 8,
-        padding: "6px 12px",
+        padding: "4px 10px",
         background: PNL, borderBottom: `1px solid ${BD}`,
         flexShrink: 0, flexWrap: "wrap",
       }}>
         <div>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.07em" }}>
+          <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.07em" }}>
             PFLASTER-KONFIGURATOR
           </div>
-          <div style={{ fontSize: 8, color: "#555" }}>
-            Godelmann Verlegemuster · Maßstabsgerechte Darstellung · Einfahrt Korschenbroich
+          <div style={{ fontSize: 7.5, color: "#444" }}>
+            Godelmann · Einfahrt Korschenbroich · Nr. 3015 · 0034 · 1032 · 1040 · 2006
           </div>
         </div>
         <div style={{ flex: 1 }} />
-        <div style={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 3, flexWrap: "wrap", alignItems: "center" }}>
           {PRESET_ORDER.map(name => (
             <button
               key={name}
               onClick={() => applyPreset(PRESETS[name]!)}
               style={{
-                padding: "3px 8px", fontSize: 9, fontWeight: 600,
+                padding: "2px 7px", fontSize: 8.5, fontWeight: 600,
                 background: "#1a1a1a", color: "#888",
                 border: `1px solid ${BD}`, borderRadius: 3,
               }}
@@ -66,16 +66,16 @@ export default function App() {
             onClick={undo}
             disabled={!histLen}
             style={{
-              padding: "3px 8px", fontSize: 9, fontWeight: 600,
+              padding: "2px 7px", fontSize: 8.5, fontWeight: 600,
               background: "#1a1a1a",
-              color:  histLen ? "#e8e4dc" : "#3a3a3a",
+              color:  histLen ? "#e8e4dc" : "#333",
               border: `1px solid ${BD}`, borderRadius: 3,
             }}
           >↺ Undo</button>
           <button
             onClick={reset}
             style={{
-              padding: "3px 8px", fontSize: 9, fontWeight: 600,
+              padding: "2px 7px", fontSize: 8.5, fontWeight: 600,
               background: "#1a1a1a", color: "#e8731a",
               border: `1px solid ${BD}`, borderRadius: 3,
             }}
@@ -83,8 +83,8 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── Main layout ── */}
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+      {/* ── Main layout: panels fill everything below header ── */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden", minHeight: 0 }}>
 
         <Toolbar
           surf={surf}   setSurf={setSurf}
@@ -105,18 +105,6 @@ export default function App() {
         />
 
         <Stats grid={grid} hover={hover} />
-      </div>
-
-      {/* ── Footer ── */}
-      <div style={{
-        padding: "3px 12px",
-        background: "#0a0a0a", borderTop: `1px solid ${BD}`,
-        fontSize: 7.5, color: "#333",
-        display: "flex", gap: 12, flexShrink: 0,
-      }}>
-        <span>FreeCAD Einfahrt.FCStd · Zellraster 300×300mm · Maßstabsgerechte Steindarstellung</span>
-        <span>Godelmann Nr. 3015 · 0034 · 1032 · 1040 · 2006</span>
-        <span style={{ color: "#3d7a18" }}>← Klicken/Ziehen · Tabs: Fläche / Muster / Winkel</span>
       </div>
     </div>
   );
