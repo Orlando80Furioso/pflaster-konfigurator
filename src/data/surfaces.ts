@@ -28,7 +28,7 @@ export const SURF: Record<string, Surface> = {
     sub: "400×200mm · Fuge 6,5mm allseitig",
     sW: 400, sH: 200, fS: 6.5, fL: 6.5,
     colStone: ["#dedad2", "#d8d4cc", "#e0dcd4", "#d4d0c8"],
-    colFugeS: "#b0aca4", colFugeL: "#b0aca4",
+    colFugeS: "#c4c0b8", colFugeL: "#c4c0b8",
     liner: [], vers: 5.3, psi: 0.30, lkw: true,
   },
   t2: {
@@ -36,7 +36,7 @@ export const SURF: Record<string, Surface> = {
     sub: "200×200mm · Fuge 6,5mm allseitig",
     sW: 200, sH: 200, fS: 6.5, fL: 6.5,
     colStone: ["#d8d4cc", "#d4d0c8", "#dedad4", "#d0ccc4"],
-    colFugeS: "#b0aca4", colFugeL: "#b0aca4",
+    colFugeS: "#c4c0b8", colFugeL: "#c4c0b8",
     liner: [], vers: 5.3, psi: 0.30, lkw: true,
   },
   t3: {
@@ -44,7 +44,7 @@ export const SURF: Record<string, Surface> = {
     sub: "300×200mm · Fuge 6,5mm allseitig",
     sW: 300, sH: 200, fS: 6.5, fL: 6.5,
     colStone: ["#d6d2ca", "#d2cec6", "#dcd8d0", "#cecac2"],
-    colFugeS: "#b0aca4", colFugeL: "#b0aca4",
+    colFugeS: "#c4c0b8", colFugeL: "#c4c0b8",
     liner: [], vers: 5.3, psi: 0.30, lkw: true,
   },
   t4: {
@@ -60,7 +60,7 @@ export const SURF: Record<string, Surface> = {
     sub: "300×200mm · 1 Liner-Streifen 30mm · Fuge 6,5mm",
     sW: 300, sH: 200, fS: 6.5, fL: 6.5,
     colStone: ["#d4d0c8", "#d0ccc4", "#d8d4cc", "#ccc8c0"],
-    colFugeS: "#b0aca4", colFugeL: "#b0aca4",
+    colFugeS: "#c4c0b8", colFugeL: "#c4c0b8",
     // 1 green strip at Y=170mm from bottom, 30mm high (top 15% of stone)
     liner: [{ yFrom: 170, height: 30, color: "#4a8a1e" }],
     vers: 15.0, psi: 0.30, lkw: false,

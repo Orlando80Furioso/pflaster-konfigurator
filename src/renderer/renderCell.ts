@@ -54,6 +54,9 @@ export function renderCell(
     ctx.beginPath();
     ctx.rect(cx, cy, cw, ch);
     ctx.clip();
+    // Pre-fill with bed-joint colour so no dark canvas background bleeds through
+    ctx.fillStyle = surf.colFugeL;
+    ctx.fillRect(cx, cy, cw, ch);
     render(ctx, cx, cy, cw, ch, surf, rr, rowOffset);
     ctx.restore();
   } else {
@@ -64,6 +67,9 @@ export function renderCell(
     oc.width   = diag;
     oc.height  = diag;
     const oc2  = oc.getContext("2d")!;
+    // Pre-fill offscreen canvas too
+    oc2.fillStyle = surf.colFugeL;
+    oc2.fillRect(0, 0, diag, diag);
     render(oc2, 0, 0, diag, diag, surf, rr, 0);
 
     ctx.save();
