@@ -182,7 +182,7 @@ export function Toolbar({
       {/* Brush selector */}
       <div style={{ padding: "7px", borderTop: `1px solid ${BD}`, background: PNL }}>
         <div style={{ fontSize: 7.5, fontWeight: 700, color: "#444", marginBottom: 4 }}>
-          PINSEL · {brush}×{brush} = {(brush * 300 / 1000).toFixed(2)}m
+          PINSEL · {brush}×{brush} = {(brush * 300 / 1000).toFixed(2)} × {(brush * 200 / 1000).toFixed(2)} m
         </div>
         <div style={{ display: "flex", gap: 3 }}>
           {[1, 2, 3, 5].map(s => (
@@ -190,12 +190,19 @@ export function Toolbar({
               key={s}
               onClick={() => setBrush(s)}
               style={{
-                flex: 1, height: 26, borderRadius: 3, fontSize: 9, fontWeight: 700,
+                flex: 1, borderRadius: 3,
                 background: brush === s ? "#1a2e12" : "#161616",
                 color:      brush === s ? "#8bc34a" : "#444",
                 border:     brush === s ? "1px solid #3d7a18" : `1px solid ${BD}`,
+                padding: "3px 0 4px",
+                display: "flex", flexDirection: "column",
+                alignItems: "center", gap: 3,
+                cursor: "pointer",
               }}
-            >{s}×{s}</button>
+            >
+              <Swatch s={surfForSwatch} p={pat} w={42} h={28} />
+              <span style={{ fontSize: 8, fontWeight: 700 }}>{s}×{s}</span>
+            </button>
           ))}
         </div>
       </div>
