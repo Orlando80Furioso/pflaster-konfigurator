@@ -176,9 +176,12 @@ export function Canvas({
   const handleUp = useCallback(() => { painting.current = false; }, []);
 
   // ── Zoom controls ─────────────────────────────────────────────────────────
-  const zoomBy   = (f: number) =>
-    setZoom(z => { const nz = Math.max(0.4, Math.min(12, z * f)); return nz; });
-  const resetView = useCallback(() => { setZoom(1); setPan({ x: 0, y: 0 }); }, []);
+  const zoomBy    = (f: number) =>
+    setZoom(z => Math.max(0.4, Math.min(12, z * f)));
+  const resetView  = useCallback(() => { setZoom(1); setPan({ x: 0, y: 0 }); }, []);
+  const centerView = useCallback(() => setPan({ x: 0, y: 0 }), []);
+
+  const isOffCenter = pan.x !== 0 || pan.y !== 0;
 
   const btnBase: React.CSSProperties = {
     padding: "2px 7px", fontSize: 9, fontWeight: 700,
@@ -247,7 +250,18 @@ export function Canvas({
           {(zoom * 100).toFixed(0)}%
         </button>
         <button onClick={() => zoomBy(1 / 1.3)} style={btnBase} title="Herauszoomen">－</button>
-        <span style={{ fontSize: 7.5, color: "#333", marginLeft: 4 }}>
+        <button
+          onClick={centerView}
+          title="Ansicht zentrieren"
+          style={{
+            ...btnBase,
+            marginLeft: 4,
+            background: isOffCenter ? "rgba(30,46,20,0.92)" : "rgba(10,10,10,0.88)",
+            color:      isOffCenter ? "#8bc34a"             : "#444",
+            border:     isOffCenter ? "1px solid #3d7a18"   : `1px solid ${BD}`,
+          }}
+        >⊕ Zentrieren</button>
+        <span style={{ fontSize: 7.5, color: "#333", marginLeft: 2 }}>
           Rad · Mitteltaste pan
         </span>
       </div>
