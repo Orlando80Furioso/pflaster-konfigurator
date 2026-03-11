@@ -15,7 +15,9 @@ export const GARAGE_R: [number, number][] = [[6450, 7320], [8110, 7320], [8110, 
 export const HAUS_WALL: [number, number][] = [[8770, 14040], [10720, 14040], [10720, 14220], [8770, 14220]];
 
 // Cell grid resolution in mm
-export const GRID = 300;
+export const GRID   = 300;    // column width (also used by pattern renderers for horizontal scaling)
+export const GRID_W = 300;    // cell width  mm
+export const GRID_H = 206.5;  // cell height mm = sH(200) + fL(6.5) = 1 stone row
 
 // Convert mm coordinates to canvas pixels
 // x, y: mm in FreeCAD space (Y up)

@@ -1,6 +1,6 @@
 import type { Grid } from "../hooks/useGrid";
 import { SURF } from "../data/surfaces";
-import { POLY, BND, GARAGE_L, GARAGE_R, HAUS_WALL, GRID, toC } from "../data/geometry";
+import { POLY, BND, GARAGE_L, GARAGE_R, HAUS_WALL, GRID_W, GRID_H, toC } from "../data/geometry";
 import { renderCell, calcRowOffset } from "./renderCell";
 
 const OX = 8;
@@ -30,13 +30,14 @@ export function drawCanvas(
 
   for (const k of Object.keys(grid)) {
     const [co, ro] = k.split("_").map(Number) as [number, number];
-    const [cx, cy] = toC(co * GRID, (ro + 1) * GRID, scale, OX, OY);
+    // Rectangular cells: GRID_W wide, GRID_H tall (= 1 stone row)
+    const [cx, cy] = toC(co * GRID_W, (ro + 1) * GRID_H, scale, OX, OY);
     const cell     = grid[k]!;
     const surf     = SURF[cell.s];
     const ro2      = calcRowOffset(ro, surf ?? SURF["t3"]!);
     renderCell(
       ctx, cx, cy,
-      GRID * scale, GRID * scale,
+      GRID_W * scale, GRID_H * scale,
       cell.s, cell.p, cell.a,
       co * 131 + ro * 17,
       ro2,
@@ -112,17 +113,15 @@ export function drawCanvas(
   // ── Hover highlight ─────────────────────────────────────────────────────────
   if (hover) {
     const [hco, hro] = hover.split("_").map(Number) as [number, number];
-    const [hx, hy]   = toC(hco * GRID, (hro + 1) * GRID, scale, OX, OY);
+    const [hx, hy]   = toC(hco * GRID_W, (hro + 1) * GRID_H, scale, OX, OY);
     ctx.strokeStyle = "rgba(255,255,255,0.9)";
     ctx.lineWidth = 1.8;
     ctx.setLineDash([]);
-    ctx.strokeRect(hx, hy, GRID * scale, GRID * scale);
+    ctx.strokeRect(hx, hy, GRID_W * scale, GRID_H * scale);
   }
 
   // ── Raster grid lines ───────────────────────────────────────────────────────
   if (showGrid) {
-    // Grid line every sH+fL mm = 206.5mm (one full stone row)
-    const RASTER_MM = 206.5;
     ctx.save();
     ctx.beginPath();
     ctx.moveTo(...ps[0]!);
@@ -130,30 +129,41 @@ export function drawCanvas(
     ctx.closePath();
     ctx.clip();
 
-    ctx.strokeStyle = "rgba(65,105,225,0.75)";
-    ctx.lineWidth   = 0.7;
+    ctx.strokeStyle = "rgba(65,105,225,0.65)";
+    ctx.lineWidth   = 0.6;
     ctx.setLineDash([3, 3]);
 
-    const [x0] = toC(0, 0, scale, OX, OY);
-    const [x1] = toC(BND.x, 0, scale, OX, OY);
+    const [x0, y0] = toC(0, 0, scale, OX, OY);
+    const [x1]     = toC(BND.x, 0, scale, OX, OY);
+    const [, y1]   = toC(0, BND.y, scale, OX, OY);
 
-    for (let ymm = 0; ymm <= BND.y + RASTER_MM; ymm += RASTER_MM) {
+    // Horizontal rows: every GRID_H mm (one stone row = 200mm + 6.5mm fuge)
+    for (let ymm = 0; ymm <= BND.y + GRID_H; ymm += GRID_H) {
       const [, yPx] = toC(0, ymm, scale, OX, OY);
       ctx.beginPath();
       ctx.moveTo(x0, yPx);
       ctx.lineTo(x1, yPx);
       ctx.stroke();
-
-      if (ymm > 0) {
-        ctx.setLineDash([]);
-        ctx.fillStyle  = "rgba(100,149,237,0.8)";
-        ctx.font       = `${Math.max(7, scale * 130)}px system-ui`;
-        ctx.textAlign  = "left";
-        ctx.fillText(`${(ymm / 1000).toFixed(3)}m`, x0 + 3, yPx - 2);
-        ctx.setLineDash([3, 3]);
-      }
     }
+
+    // Vertical columns: every GRID_W mm (one stone width = 300mm)
+    for (let xmm = 0; xmm <= BND.x + GRID_W; xmm += GRID_W) {
+      const [xPx] = toC(xmm, 0, scale, OX, OY);
+      ctx.beginPath();
+      ctx.moveTo(xPx, y1);
+      ctx.lineTo(xPx, y0);
+      ctx.stroke();
+    }
+
+    // Row-height labels on left edge
     ctx.setLineDash([]);
+    ctx.fillStyle  = "rgba(100,149,237,0.8)";
+    ctx.font       = `${Math.max(7, scale * 130)}px system-ui`;
+    ctx.textAlign  = "left";
+    for (let ymm = GRID_H; ymm <= BND.y + GRID_H; ymm += GRID_H) {
+      const [, yPx] = toC(0, ymm, scale, OX, OY);
+      ctx.fillText(`${(ymm / 1000).toFixed(3)}m`, x0 + 3, yPx - 2);
+    }
     ctx.restore();
   }
 

@@ -1,5 +1,5 @@
 import { SURF } from "../data/surfaces";
-import { GRID, seededRand } from "../data/geometry";
+import { GRID_H, seededRand } from "../data/geometry";
 import { renderReihen }      from "./patterns/reihen";
 import { renderEllbogen }    from "./patterns/ellbogen";
 import { renderMehrstein }   from "./patterns/mehrstein";
@@ -85,8 +85,9 @@ export function renderCell(
 
 /**
  * Calculate rowOffset for a cell at grid row `ro`.
- * Aligns stone rows across cell boundaries.
+ * With GRID_H = 206.5mm ≈ sH + fL (= 1 stone row), rowOffset ≈ ro.
+ * The formula handles slight differences (e.g. t4 fL=8.5mm vs 6.5mm).
  */
 export function calcRowOffset(ro: number, surf: Surface): number {
-  return Math.round((ro * GRID) / (surf.sH + surf.fL));
+  return Math.round((ro * GRID_H) / (surf.sH + surf.fL));
 }

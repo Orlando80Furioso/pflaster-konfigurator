@@ -8,7 +8,7 @@ export function renderMehrstein(
   ctx: CanvasRenderingContext2D,
   x: number, y: number, w: number, h: number,
   surf: Surface,
-  rr: (n: number) => number,
+  _rr: (n: number) => number,
   rowOffset: number,
 ): void {
   const sc   = w / GRID;
@@ -16,6 +16,7 @@ export function renderMehrstein(
   const sHpx = surf.sH * sc;
   const fSpx = Math.max(1.0, surf.fS * sc);
   const fLpx = Math.max(1.0, surf.fL * sc);
+  const step = sWpx + fSpx;
 
   const seqFull = [sWpx, sWpx * 0.667, sWpx * 0.667];
   const seqHalf = [sWpx * 0.667, sWpx * 0.667, sWpx * 0.667];
@@ -31,8 +32,9 @@ export function renderMehrstein(
     let xi = x - (offsets[row % offsets.length] ?? 0);
     let si = 0;
     while (xi < x + w + sWpx) {
-      const sw = seq[si % seq.length]!;
-      drawStone(ctx, xi, yi, sw, rH, surf, rr, xi * 0.03 + row * 7.3 + si);
+      const sw        = seq[si % seq.length]!;
+      const colorSeed = Math.round(xi / step) * 7.1 + row * 7.3;
+      drawStone(ctx, xi, yi, sw, rH, surf, colorSeed);
       ctx.fillStyle = surf.colFugeS;
       ctx.fillRect(xi + sw, yi, fSpx, rH);
       xi += sw + fSpx;

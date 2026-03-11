@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback, type RefObject } from "react";
 import type { Grid, CellState } from "../hooks/useGrid";
-import { BND, GRID } from "../data/geometry";
+import { BND, GRID_W, GRID_H } from "../data/geometry";
 import { SURF } from "../data/surfaces";
 import { PAT } from "../data/patterns";
 import { drawCanvas, OX, OY } from "../renderer/drawCanvas";
@@ -53,7 +53,8 @@ export function Canvas({
   const cellFromPos = useCallback((ex: number, ey: number): string | null => {
     const xmm = (ex - OX) / scale;
     const ymm = BND.y - (ey - OY) / scale;
-    const k   = `${Math.floor(xmm / GRID)}_${Math.floor(ymm / GRID)}`;
+    // Rectangular cells: GRID_W wide, GRID_H tall
+    const k   = `${Math.floor(xmm / GRID_W)}_${Math.floor(ymm / GRID_H)}`;
     return k in gridRef.current ? k : null;
   }, [scale]);
 

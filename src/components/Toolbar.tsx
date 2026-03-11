@@ -1,5 +1,6 @@
 import { SURF, SURF_ORDER } from "../data/surfaces";
 import { PAT, PAT_ORDER } from "../data/patterns";
+import { GRID_W, GRID_H } from "../data/geometry";
 import { Swatch } from "./Swatch";
 
 const BG  = "#141414";
@@ -182,7 +183,7 @@ export function Toolbar({
       {/* Brush selector */}
       <div style={{ padding: "7px", borderTop: `1px solid ${BD}`, background: PNL }}>
         <div style={{ fontSize: 7.5, fontWeight: 700, color: "#444", marginBottom: 4 }}>
-          PINSEL · {brush}×{brush} = {(brush * 300 / 1000).toFixed(2)} × {(brush * 200 / 1000).toFixed(2)} m
+          PINSEL · {brush}×{brush} = {(brush * GRID_W / 1000).toFixed(2)} × {(brush * GRID_H / 1000).toFixed(2)} m
         </div>
         <div style={{ display: "flex", gap: 3 }}>
           {[1, 2, 3, 5].map(s => (

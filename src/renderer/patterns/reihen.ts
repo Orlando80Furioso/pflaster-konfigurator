@@ -8,7 +8,7 @@ export function renderReihen(
   ctx: CanvasRenderingContext2D,
   x: number, y: number, w: number, h: number,
   surf: Surface,
-  rr: (n: number) => number,
+  _rr: (n: number) => number,
   rowOffset: number,
 ): void {
   const sc   = w / GRID;
@@ -16,6 +16,7 @@ export function renderReihen(
   const sHpx = surf.sH * sc;
   const fSpx = Math.max(1.0, surf.fS * sc);
   const fLpx = Math.max(1.0, surf.fL * sc);
+  const step = sWpx + fSpx;
 
   let yi  = y;
   let row = rowOffset;
@@ -24,10 +25,12 @@ export function renderReihen(
     const off = (row % 2 === 1) ? -(sWpx * 0.5) : 0;
     let xi = x + off;
     while (xi < x + w + sWpx) {
-      drawStone(ctx, xi, yi, sWpx, sHpx, surf, rr, xi * 0.03 + row * 3.7);
+      // Integer stone-column index → same colour from any adjacent cell, no seam
+      const colorSeed = Math.round(xi / step) * 7.1 + row * 3.7;
+      drawStone(ctx, xi, yi, sWpx, sHpx, surf, colorSeed);
       ctx.fillStyle = surf.colFugeS;
       ctx.fillRect(xi + sWpx, yi, fSpx, sHpx);
-      xi += sWpx + fSpx;
+      xi += step;
     }
     ctx.fillStyle = surf.colFugeL;
     ctx.fillRect(x, yi + sHpx, w, fLpx);

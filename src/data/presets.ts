@@ -1,12 +1,12 @@
 import type { CellState } from "../hooks/useGrid";
-import { GRID } from "./geometry";
+import { GRID_W, GRID_H } from "./geometry";
 
 export type PresetFn = (col: number, row: number) => CellState;
 
 export const PRESETS: Record<string, PresetFn> = {
   "Plan V2": (c, r) => {
-    const x = c * GRID + GRID / 2;
-    const y = r * GRID + GRID / 2;
+    const x = c * GRID_W + GRID_W / 2;
+    const y = r * GRID_H + GRID_H / 2;
     if (
       (x < 2600 && y > 1000 && y < 2900) ||
       (x > 4200 && x < 7400 && y < 2800) ||

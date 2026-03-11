@@ -8,7 +8,7 @@ export function renderEllbogen(
   ctx: CanvasRenderingContext2D,
   x: number, y: number, w: number, h: number,
   surf: Surface,
-  rr: (n: number) => number,
+  _rr: (n: number) => number,
   rowOffset: number,
 ): void {
   const sc   = w / GRID;
@@ -16,6 +16,7 @@ export function renderEllbogen(
   const sHpx = surf.sH * sc;
   const fSpx = Math.max(1.0, surf.fS * sc);
   const fLpx = Math.max(1.0, surf.fL * sc);
+  const step = sWpx + fSpx;
 
   const seqA = [sWpx, sWpx, sWpx * 0.5];
   const seqB = [sWpx * 0.5, sWpx, sWpx];
@@ -28,8 +29,9 @@ export function renderEllbogen(
     let xi = x - (row % 3) * sWpx * 0.33;
     let si = 0;
     while (xi < x + w + sWpx) {
-      const sw = seq[si % seq.length]!;
-      drawStone(ctx, xi, yi, sw, sHpx, surf, rr, xi * 0.03 + row * 5.1 + si);
+      const sw        = seq[si % seq.length]!;
+      const colorSeed = Math.round(xi / step) * 7.1 + row * 5.1;
+      drawStone(ctx, xi, yi, sw, sHpx, surf, colorSeed);
       ctx.fillStyle = surf.colFugeS;
       ctx.fillRect(xi + sw, yi, fSpx, sHpx);
       xi += sw + fSpx;

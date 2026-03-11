@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from "react";
-import { POLY, GRID, pip } from "../data/geometry";
+import { POLY, GRID_W, GRID_H, pip } from "../data/geometry";
 import { BND } from "../data/geometry";
 import type { PresetFn } from "../data/presets";
 
@@ -13,9 +13,11 @@ export type Grid = Record<string, CellState>;
 
 function buildInitialGrid(): Grid {
   const g: Grid = {};
-  for (let r = 0; r < Math.ceil(BND.y / GRID); r++) {
-    for (let c = 0; c < Math.ceil(BND.x / GRID); c++) {
-      if (pip(c * GRID + GRID / 2, r * GRID + GRID / 2, POLY)) {
+  // Rows: height = GRID_H = 206.5mm = 1 stone row (sH + fL)
+  // Cols: width  = GRID_W = 300mm   = 1 stone width
+  for (let r = 0; r < Math.ceil(BND.y / GRID_H); r++) {
+    for (let c = 0; c < Math.ceil(BND.x / GRID_W); c++) {
+      if (pip(c * GRID_W + GRID_W / 2, r * GRID_H + GRID_H / 2, POLY)) {
         g[`${c}_${r}`] = { s: "t3", p: "reihen", a: 0 };
       }
     }

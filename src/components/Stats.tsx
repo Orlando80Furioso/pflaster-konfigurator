@@ -1,15 +1,16 @@
 import { SURF, SURF_ORDER } from "../data/surfaces";
 import { PAT, PAT_ORDER } from "../data/patterns";
+import { GRID_W, GRID_H } from "../data/geometry";
 import type { Grid } from "../hooks/useGrid";
 
 const PNL = "#0f0f0f";
 const BD  = "#1e1e1e";
-const GRID_MM = 300;
+// Cell area in m² – rectangular: 300mm × 206.5mm
+const CELL_M2 = (GRID_W / 1000) * (GRID_H / 1000);
 
 function stoneCount(surfId: string, cellCount: number): number {
   const t = SURF[surfId]!;
-  const cm2 = (GRID_MM / 1000) ** 2;
-  return Math.round(cellCount * cm2 * 1e6 / ((t.sW + t.fS) * (t.sH + t.fL)));
+  return Math.round(cellCount * CELL_M2 * 1e6 / ((t.sW + t.fS) * (t.sH + t.fL)));
 }
 
 interface StatsProps {
@@ -20,7 +21,7 @@ interface StatsProps {
 export function Stats({ grid, hover }: StatsProps) {
   const cells = Object.values(grid);
   const total = cells.length;
-  const cm2   = (GRID_MM / 1000) ** 2;
+  const cm2   = CELL_M2;
 
   // Count cells per surface and pattern
   const sc: Record<string, number> = {};
@@ -154,7 +155,7 @@ export function Stats({ grid, hover }: StatsProps) {
             padding: "4px 8px", border: `1px solid ${BD}`, fontSize: 7.5, marginTop: 2,
           }}>
             <div style={{ color: "#444", marginBottom: 1 }}>
-              x={(co * 300 / 1000).toFixed(2)}m · y={(ro * 300 / 1000).toFixed(2)}m
+              x={(co * GRID_W / 1000).toFixed(2)}m · y={(ro * GRID_H / 1000).toFixed(2)}m
             </div>
             <div style={{ fontWeight: 700, color: "#bbb" }}>{t?.name ?? "—"}</div>
             <div style={{ color: "#3d7a18" }}>{PAT[hoverCell.p]?.label ?? "—"} · {hoverCell.a}°</div>

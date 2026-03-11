@@ -8,7 +8,7 @@ export function renderGrossformat(
   ctx: CanvasRenderingContext2D,
   x: number, y: number, w: number, h: number,
   surf: Surface,
-  rr: (n: number) => number,
+  _rr: (n: number) => number,
   rowOffset: number,
 ): void {
   const sc   = w / GRID;
@@ -16,6 +16,7 @@ export function renderGrossformat(
   const sHpx = surf.sH * sc;
   const fSpx = Math.max(1.0, surf.fS * sc);
   const fLpx = Math.max(1.0, surf.fL * sc);
+  const step = sWpx + fSpx;
 
   const rowDefs = [
     { rH: sHpx * 2.0, seqW: [sWpx * 2.0,  sWpx * 1.33, sWpx * 1.33] },
@@ -32,8 +33,9 @@ export function renderGrossformat(
     let xi = x - (row % 2 ? sWpx : 0);
     let si = 0;
     while (xi < x + w + sWpx * 2) {
-      const sw = rd.seqW[si % rd.seqW.length]!;
-      drawStone(ctx, xi, yi, sw, rd.rH, surf, rr, xi * 0.03 + row * 9.1 + si);
+      const sw        = rd.seqW[si % rd.seqW.length]!;
+      const colorSeed = Math.round(xi / step) * 7.1 + row * 9.1;
+      drawStone(ctx, xi, yi, sw, rd.rH, surf, colorSeed);
       ctx.fillStyle = surf.colFugeS;
       ctx.fillRect(xi + sw, yi, fSpx, rd.rH);
       xi += sw + fSpx;
